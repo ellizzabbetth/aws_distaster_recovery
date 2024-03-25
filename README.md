@@ -47,6 +47,9 @@ In order to achieve the highest levels of durability and availability in AWS you
 **NOTE**: Be sure to use different CIDR address ranges for the VPCs.
 **SAVE** screenshots of both VPCs after they are created. Name your screenshots: primary_Vpc.png, secondary_Vpc.png
 
+![](screenshots/primary_Vpc.png)
+
+![](screenshots/secondary_Vpc.png)
 
 ### Highly durable RDS Database
 1. Create a new RDS Subnet group in the active and standby region.
@@ -56,11 +59,33 @@ In order to achieve the highest levels of durability and availability in AWS you
      - Have an initial database called “udacity.”
 3. Create a read replica database in the standby region. This database has the same requirements as the database in the active region. 
 
+Disaster recover: https://www.youtube.com/watch?v=0EutWjcS_qs
+
 **SAVE** screenshots of the configuration of the databases in the active and secondary region after they are created. 
 **SAVE** screenshots of the configuration of the database subnet groups as well as route tables associated with those subnets. Name the screenshots: primaryDB_config.png, secondaryDB_config.png, primaryDB_subnetgroup.png, secondaryDB_subnetgroup.png, primaryVPC_subnets.png, secondaryVPC_subnets.png, primary_subnet_routing.png, secondary_subnet_routing.png
 
-https://www.youtube.com/watch?v=uMQj8tUsvRE
+![](screenshots/primaryDB_config.png)
 
+![](screenshots/secondaryDB_config.png)
+
+![](screenshots/primaryDB_subnetgroup.png)
+
+![](screenshots/secondaryDB_subnetgroup.png)
+
+
+![](screenshots/secondaryVPC_subnets.png)
+
+![](screenshots/primary_subnet_routing.png)
+
+![](screenshots/secondary_subnet_routing.png)
+
+https://www.youtube.com/watch?v=uMQj8tUsvRE
+https://www.youtube.com/watch?v=VHGyQQVMhOU
+
+https://www.youtube.com/watch?v=fLqJXTOhUg4
+https://www.youtube.com/watch?v=SHivnLfJYzM&t=116s
+
+https://www.youtube.com/watch?v=Mu7fgHOzOn0
 ### Estimate availability of this configuration
 Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:
 
@@ -87,6 +112,12 @@ In the active region:
 
 **SAVE** screenshots of the DB Connections and the database replication configuration. Name your screenshots: monitoring_connections.png, monitoring_replication.png
 
+
+![](screenshots/monitoring_connections.png)
+
+![](screenshots/monitoring_replication.png)
+
+
 ### Part 2
 ### Failover And Recovery
 In the standby region:
@@ -101,6 +132,8 @@ In the standby region:
 
 **SAVE** screenshot of the database configuration now, before promoting the read replica database in the next step. Name your screenshot: rr_before_promotion.png
 
+![](screenshots/rr_before_promotion.png)
+
 6. Promote the read replica
 7. Verify that if you are able to insert data into and read from the read replica database.
 8. You have now demonstrated that you can read and write the promoted database in the standby region.
@@ -108,6 +141,8 @@ In the standby region:
 **SAVE** log of connecting to the database, writing to and reading from the database in a text file named "log_rr_after_promotion.txt"
 
 **SAVE** screenshots of the database configuration after the database promotion. Name your screenshot: rr_after_promotion.png
+
+![](screenshots/rr_after_promotion.png)
 
 ### Part 3
 ### Website Resiliency
@@ -121,6 +156,8 @@ Build a resilient static web hosting solution in AWS. Create a versioned S3 buck
 **Save** the screenshot of the webpage. Name your screenshot "s3_original.png"
 You will now “accidentally” change the contents of the website such that it is no longer serving the correct content
 
+![](screenshots/s3_original.png)
+
 You will now “accidentally” change the contents of the website such that it is no longer serving the correct content
 
 1. Change `index.html` to refer to a different “season”
@@ -129,6 +166,8 @@ You will now “accidentally” change the contents of the website such that it 
 
 **SAVE** a screenshot of the modified webpage. Name your screenshot "s3_season.png"
 
+![](screenshots/s3_season.png)
+
 You will now need to “recover” the website by rolling the content back to a previous version.
 
 1. Recover the `index.html` object back to the original version
@@ -136,9 +175,15 @@ You will now need to “recover” the website by rolling the content back to a 
 
 **SAVE** a screenshot of the modified webpage. Name your screenshot "s3_season_revert.png"
 
+![](screenshots/s3_season_revert.png)
+
 You will now “accidentally” delete contents from the S3 bucket. Delete “winter.jpg”
 
 **SAVE** screenshots of the modified webpage and of the existing versions of the file showing the "Deletion marker". Name your screenshots: s3_deletion.png, s3_delete_marker.png
+
+![](screenshots/s3_deletion.png)
+
+![](screenshots/s3_delete_marker.png)
 
 You will now need to “recover” the object:
 
@@ -147,4 +192,10 @@ You will now need to “recover” the object:
 
 **SAVE** a screenshot of the modified webpage. Name your screenshot "s3_delete_revert.png"
 
+![](screenshots/s3_delete_revert.png)
+
 ## License
+
+
+https://stackoverflow.com/questions/8193768/unprotected-private-key-file-error-using-ssh-into-amazon-ec2-instance-aws
+https://www.youtube.com/watch?v=z3nglzh0y10
