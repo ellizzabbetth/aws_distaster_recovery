@@ -59,6 +59,7 @@ In order to achieve the highest levels of durability and availability in AWS you
 **SAVE** screenshots of the configuration of the databases in the active and secondary region after they are created. 
 **SAVE** screenshots of the configuration of the database subnet groups as well as route tables associated with those subnets. Name the screenshots: primaryDB_config.png, secondaryDB_config.png, primaryDB_subnetgroup.png, secondaryDB_subnetgroup.png, primaryVPC_subnets.png, secondaryVPC_subnets.png, primary_subnet_routing.png, secondary_subnet_routing.png
 
+https://www.youtube.com/watch?v=uMQj8tUsvRE
 
 ### Estimate availability of this configuration
 Write a paragraph or two describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, multi-region database in terms of:

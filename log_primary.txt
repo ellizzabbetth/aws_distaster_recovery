@@ -1,0 +1,919 @@
+
+Instance ID
+i-0656649736defd57f (udacity-ec2-recoverability)
+Open an SSH client.
+
+Locate your private key file. The key used to launch this instance is udacity-ec2-recoverability.pem
+
+Run this command, if necessary, to ensure your key is not publicly viewable.
+ chmod 400 "udacity-ec2-recoverability.pem"
+
+Connect to your instance using its Public DNS:
+ ec2-184-72-104-99.compute-1.amazonaws.com
+
+Example:
+
+ ssh -i "udacity-ec2-recoverability.pem" ec2-user@ec2-184-72-104-99.compute-1.amazonaws.com
+Note: In most cases, the guessed username is correct. However, read your AMI usage instructions to check if the AMI owner has changed the default AMI username.
+
+https://www.youtube.com/watch?v=N9DwaThhpsg
+
+https://knowledge.udacity.com/questions/711952
+
+root@ip-10-1-10-175:/home/ubuntu# mysql -h primary.cpi0hq5llxpo.us-west-2.rds.amazonaws.com -u root -p udacity
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 96
+Server version: 8.0.23 Source distribution
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql> create table people (ID int PRIMARY KEY, FirstName varchar(255), LastName varchar(255));
+Query OK, 0 rows affected (0.06 sec)
+mysql> insert into people values(1, 'Michal', 'Hynek');
+Query OK, 1 row affected (0.01 sec)
+mysql> select * from people;
++----+-----------+----------+
+| ID | FirstName | LastName |
++----+-----------+----------+
+|  1 | Michal    | Hynek    |
++----+-----------+----------+
+row in set (0.00 sec)
+mysql>
+
+https://github.com/akil-saleh/Recoverability-in-AWS/blob/master/Recoverability%20in%20AWS/Part1_Data%20Durability%20And%20Recovery/log_primary.txt
+
+[ec2-user@ip-10-1-10-116 ~]$ mysql -h primary.c4dbcayubhac.us-east-2.rds.amazonaws.com -P 3306 -u admin -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 37
+Server version: 8.0.17 Source distribution
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create table employee(
+    ->    emp_id INT NOT NULL AUTO_INCREMENT,
+    ->    emp_name VARCHAR(100) NOT NULL,
+    ->    salary INT NOT NULL,
+    ->    PRIMARY KEY ( emp_id )
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> create database udacity
+    -> ;
+Query OK, 1 row affected (0.02 sec)
+mysql> use udacity
+Database changed
+mysql> create table employee(
+    ->    emp_id INT NOT NULL AUTO_INCREMENT,
+    ->    emp_name VARCHAR(100) NOT NULL,
+    ->    salary INT NOT NULL,
+    ->    PRIMARY KEY ( emp_id )
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from employee;
+Empty set (0.00 sec)
+
+mysql> insert into employee (emp_name, salary) values(Brian, 10000);
+ERROR 1054 (42S22): Unknown column 'Brian' in 'field list'
+mysql> insert into employee (emp_name, salary) values('Brian', 10000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+--------+
+| emp_id | emp_name | salary |
++--------+----------+--------+
+|      1 | Brian    |  10000 |
++--------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql>
+
+
+minE ----------------------
+
+  - nothing provides libssl.so.10 needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libgcc_s.so.1(GCC_3.0) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(CXXABI_1.3) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libcrypto.so.10(libcrypto.so.10) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libssl.so.10(libssl.so.10) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.11) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.9) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0(GLIBC_2.3.2) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.15) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides librt.so.1 needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(CXXABI_1.3.5) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.18) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libc.so.6(GLIBC_2.17) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libgcc_s.so.1(GCC_3.4) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libm.so.6(GLIBC_2.1) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libresolv.so.2 needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.14) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libresolv.so.2(GLIBC_2.2) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libresolv.so.2(GLIBC_2.9) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides librt.so.1(GLIBC_2.2) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0(GLIBC_2.12) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libncurses.so.5 needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.19) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libtinfo.so.5 needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(CXXABI_1.3.2) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.6) needed by mysql-community-client-8.0.35-1.el7.i686 from mysql80-community
+  - nothing provides libcrypto.so.10()(64bit) needed by mysql-community-client-8.0.35-1.el7.x86_64 from mysql80-community
+  - nothing provides libssl.so.10()(64bit) needed by mysql-community-client-8.0.35-1.el7.x86_64 from mysql80-community
+  - nothing provides libcrypto.so.10(libcrypto.so.10)(64bit) needed by mysql-community-client-8.0.35-1.el7.x86_64 from mysql80-community
+  - nothing provides libssl.so.10(libssl.so.10)(64bit) needed by mysql-community-client-8.0.35-1.el7.x86_64 from mysql80-community
+  - nothing provides libdl.so.2 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libgcc_s.so.1 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libm.so.6 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0(GLIBC_2.0) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libgcc_s.so.1(GLIBC_2.0) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0(GLIBC_2.1) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0(GLIBC_2.2) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libdl.so.2(GLIBC_2.0) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libdl.so.2(GLIBC_2.1) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libcrypto.so.10 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libssl.so.10 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libgcc_s.so.1(GCC_3.0) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(CXXABI_1.3) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libcrypto.so.10(libcrypto.so.10) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libssl.so.10(libssl.so.10) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.11) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.9) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0(GLIBC_2.3.2) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.15) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides librt.so.1 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(CXXABI_1.3.5) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.18) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libc.so.6(GLIBC_2.17) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libgcc_s.so.1(GCC_3.4) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libm.so.6(GLIBC_2.1) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libresolv.so.2 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.14) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libresolv.so.2(GLIBC_2.2) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libresolv.so.2(GLIBC_2.9) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides librt.so.1(GLIBC_2.2) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libpthread.so.0(GLIBC_2.12) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libncurses.so.5 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.19) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libtinfo.so.5 needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(CXXABI_1.3.2) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libstdc++.so.6(GLIBCXX_3.4.6) needed by mysql-community-client-8.0.36-1.el7.i686 from mysql80-community
+  - nothing provides libcrypto.so.10()(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+  - nothing provides libssl.so.10()(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+  - nothing provides libcrypto.so.10(libcrypto.so.10)(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+  - nothing provides libssl.so.10(libssl.so.10)(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+(try to add '--skip-broken' to skip uninstallable packages)
+[root@ip-10-1-11-184 ~]# yum install mysql --skip-broken
+Last metadata expiration check: 5:13:38 ago on Sun Mar 24 11:33:38 2024.
+Dependencies resolved.
+
+ Problem: cannot install the best candidate for the job
+  - nothing provides libcrypto.so.10()(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+  - nothing provides libssl.so.10()(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+  - nothing provides libcrypto.so.10(libcrypto.so.10)(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+  - nothing provides libssl.so.10(libssl.so.10)(64bit) needed by mysql-community-client-8.0.36-1.el7.x86_64 from mysql80-community
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                     Architecture                                                Version                                                              Repository                                                              Size
+===========================================================================================================================================================================================================================================================================================
+Skipping packages with broken dependencies:
+ mysql-community-client                                                      x86_64                                                      8.0.36-1.el7                                                         mysql80-community                                                       16 M
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Skip  1 Package
+
+Nothing to do.
+Complete!
+[root@ip-10-1-11-184 ~]# mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+-bash: mysql: command not found
+[root@ip-10-1-11-184 ~]# mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+-bash: mysql: command not found
+[root@ip-10-1-11-184 ~]# sudo wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+sudo yum localinstall mysql57-community-release-el7-11.noarch.rpm 
+sudo yum install mysql-community-server
+systemctl start mysqld.service--2024-03-24 16:54:23--  https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+Resolving dev.mysql.com (dev.mysql.com)... 104.108.116.193, 2600:1408:20:c83::2e31, 2600:1408:20:c87::2e31
+Connecting to dev.mysql.com (dev.mysql.com)|104.108.116.193|:443... connected.
+HTTP request sent, awaiting response... 302 Moved Temporarily
+Location: https://repo.mysql.com//mysql57-community-release-el7-11.noarch.rpm [following]
+--2024-03-24 16:54:24--  https://repo.mysql.com//mysql57-community-release-el7-11.noarch.rpm
+Resolving repo.mysql.com (repo.mysql.com)... 23.0.229.9, 2600:1408:7400:1a2::1d68, 2600:1408:7400:1a6::1d68
+Connecting to repo.mysql.com (repo.mysql.com)|23.0.229.9|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 25680 (25K) [application/x-redhat-package-manager]
+Saving to: ‘mysql57-community-release-el7-11.noarch.rpm’
+
+mysql57-community-release-el7-11.noarch.rpm                            100%[===========================================================================================================================================================================>]  25.08K  --.-KB/s    in 0.005s  
+
+2024-03-24 16:54:24 (4.47 MB/s) - ‘mysql57-community-release-el7-11.noarch.rpm’ saved [25680/25680]
+
+[root@ip-10-1-11-184 ~]# mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+-bash: mysql: command not found
+[root@ip-10-1-11-184 ~]# sudo yum localinstall mysql57-community-release-el7-11.noarch.rpm 
+Last metadata expiration check: 5:21:11 ago on Sun Mar 24 11:33:38 2024.
+Error: 
+ Problem: problem with installed package mysql80-community-release-el7-3.noarch
+  - package mysql80-community-release-el7-3.noarch from @System conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-1.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-10.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-11.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-2.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-3.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-6.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-7.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - package mysql80-community-release-el7-9.noarch from mysql80-community conflicts with mysql57-community-release provided by mysql57-community-release-el7-11.noarch from @commandline
+  - conflicting requests
+(try to add '--allowerasing' to command line to replace conflicting packages or '--skip-broken' to skip uninstallable packages)
+[root@ip-10-1-11-184 ~]# sudo yum localinstall mysql57-community-release-el7-11.noarch.rpm --allowerasing
+Last metadata expiration check: 5:21:34 ago on Sun Mar 24 11:33:38 2024.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                          Architecture                                                  Version                                                         Repository                                                            Size
+===========================================================================================================================================================================================================================================================================================
+Installing:
+ mysql57-community-release                                                        noarch                                                        el7-11                                                          @commandline                                                          25 k
+Removing dependent packages:
+ mysql80-community-release                                                        noarch                                                        el7-3                                                           @@commandline                                                         31 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Install  1 Package
+Remove   1 Package
+
+Total size: 25 k
+Is this ok [y/N]: y
+Downloading Packages:
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                                                                                                                                                   1/1 
+  Installing       : mysql57-community-release-el7-11.noarch                                                                                                                                                                                                                           1/2 
+  Erasing          : mysql80-community-release-el7-3.noarch                                                                                                                                                                                                                            2/2 
+  Verifying        : mysql57-community-release-el7-11.noarch                                                                                                                                                                                                                           1/2 
+  Verifying        : mysql80-community-release-el7-3.noarch                                                                                                                                                                                                                            2/2 
+
+Installed:
+  mysql57-community-release-el7-11.noarch                                                                                                                                                                                                                                                  
+Removed:
+  mysql80-community-release-el7-3.noarch                                                                                                                                                                                                                                                   
+
+Complete!
+[root@ip-10-1-11-184 ~]# mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+-bash: mysql: command not found
+[root@ip-10-1-11-184 ~]# sudo yum install mysql-community-server
+MySQL 5.7 Community Server                                                                                                                                                                                                                                  26 MB/s | 3.1 MB     00:00    
+Last metadata expiration check: 0:00:01 ago on Sun Mar 24 16:55:32 2024.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                  Architecture                                             Version                                                                       Repository                                                           Size
+===========================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   184 M
+Installing dependencies:
+ libxcrypt-compat                                                         x86_64                                                   4.4.33-7.amzn2023                                                             amazonlinux                                                          92 k
+ mysql-community-client                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                    31 M
+ mysql-community-common                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   313 k
+ mysql-community-libs                                                     x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   3.0 M
+ ncurses-compat-libs                                                      x86_64                                                   6.2-4.20200222.amzn2023.0.6                                                   amazonlinux                                                         323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Install  6 Packages
+
+Total download size: 219 M
+Installed size: 931 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/6): libxcrypt-compat-4.4.33-7.amzn2023.x86_64.rpm                                                                                                                                                                                                       1.5 MB/s |  92 kB     00:00    
+(2/6): ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm                                                                                                                                                                                          2.9 MB/s | 323 kB     00:00    
+(3/6): mysql-community-common-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                      5.9 MB/s | 313 kB     00:00    
+(4/6): mysql-community-libs-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                        9.6 MB/s | 3.0 MB     00:00    
+(5/6): mysql-community-client-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                       50 MB/s |  31 MB     00:00    
+(6/6): mysql-community-server-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                       58 MB/s | 184 MB     00:03    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                                                                                                       65 MB/s | 219 MB     00:03     
+MySQL 5.7 Community Server                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+Importing GPG key 0x5072E1F5:
+ Userid     : "MySQL Release Engineering <mysql-build@oss.oracle.com>"
+ Fingerprint: A4A9 4068 76FC BD3C 4567 70C8 8C71 8D3B 5072 E1F5
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Is this ok [y/N]: y
+Key imported successfully
+Import of key(s) didn't help, wrong key(s)?
+Public key for mysql-community-client-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-common-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-common-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-libs-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-libs-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[root@ip-10-1-11-184 ~]# systemctl start mysqld.service
+Failed to start mysqld.service: Unit mysqld.service not found.
+[root@ip-10-1-11-184 ~]# sudo yum install mysql-community-server
+Last metadata expiration check: 0:00:31 ago on Sun Mar 24 16:55:32 2024.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                  Architecture                                             Version                                                                       Repository                                                           Size
+===========================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   184 M
+Installing dependencies:
+ libxcrypt-compat                                                         x86_64                                                   4.4.33-7.amzn2023                                                             amazonlinux                                                          92 k
+ mysql-community-client                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                    31 M
+ mysql-community-common                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   313 k
+ mysql-community-libs                                                     x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   3.0 M
+ ncurses-compat-libs                                                      x86_64                                                   6.2-4.20200222.amzn2023.0.6                                                   amazonlinux                                                         323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Install  6 Packages
+
+Total size: 219 M
+Installed size: 931 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                  
+[SKIPPED] libxcrypt-compat-4.4.33-7.amzn2023.x86_64.rpm: Already downloaded                                                                                                                                                                                                               
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                              
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                
+[SKIPPED] mysql-community-server-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                              
+MySQL 5.7 Community Server                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+GPG key at file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql (0x5072E1F5) is already installed
+The GPG keys listed for the "MySQL 5.7 Community Server" repository are already installed but they are not correct for this package.
+Check that the correct key URLs are configured for this repository.. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-common-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-common-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-libs-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-libs-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[root@ip-10-1-11-184 ~]# yum clean packages
+6 files removed
+[root@ip-10-1-11-184 ~]# sudo yum install mysql-community-server
+Last metadata expiration check: 0:00:50 ago on Sun Mar 24 16:55:32 2024.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                  Architecture                                             Version                                                                       Repository                                                           Size
+===========================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   184 M
+Installing dependencies:
+ libxcrypt-compat                                                         x86_64                                                   4.4.33-7.amzn2023                                                             amazonlinux                                                          92 k
+ mysql-community-client                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                    31 M
+ mysql-community-common                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   313 k
+ mysql-community-libs                                                     x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   3.0 M
+ ncurses-compat-libs                                                      x86_64                                                   6.2-4.20200222.amzn2023.0.6                                                   amazonlinux                                                         323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Install  6 Packages
+
+Total download size: 219 M
+Installed size: 931 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/6): libxcrypt-compat-4.4.33-7.amzn2023.x86_64.rpm                                                                                                                                                                                                       1.3 MB/s |  92 kB     00:00    
+(2/6): ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm                                                                                                                                                                                          3.9 MB/s | 323 kB     00:00    
+(3/6): mysql-community-common-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                      5.6 MB/s | 313 kB     00:00    
+(4/6): mysql-community-libs-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                         16 MB/s | 3.0 MB     00:00    
+(5/6): mysql-community-client-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                       44 MB/s |  31 MB     00:00    
+(6/6): mysql-community-server-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                       60 MB/s | 184 MB     00:03    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                                                                                                       67 MB/s | 219 MB     00:03     
+MySQL 5.7 Community Server                                                                                                                                                                                                                                  22 MB/s |  27 kB     00:00    
+GPG key at file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql (0x5072E1F5) is already installed
+The GPG keys listed for the "MySQL 5.7 Community Server" repository are already installed but they are not correct for this package.
+Check that the correct key URLs are configured for this repository.. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-common-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-common-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-libs-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-libs-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[root@ip-10-1-11-184 ~]# sudo yum -y install mariadb-server
+Last metadata expiration check: 0:01:16 ago on Sun Mar 24 16:55:32 2024.
+No match for argument: mariadb-server
+Error: Unable to find a match: mariadb-server
+[root@ip-10-1-11-184 ~]# sudo yum update -y 
+Last metadata expiration check: 0:02:00 ago on Sun Mar 24 16:55:32 2024.
+Dependencies resolved.
+Nothing to do.
+Complete!
+[root@ip-10-1-11-184 ~]# 
+[root@ip-10-1-11-184 ~]# sudo yum install -y mariadb-server
+Last metadata expiration check: 0:02:30 ago on Sun Mar 24 16:55:32 2024.
+No match for argument: mariadb-server
+Error: Unable to find a match: mariadb-server
+[root@ip-10-1-11-184 ~]# wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+--2024-03-24 16:59:07--  https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+Resolving downloads.mariadb.com (downloads.mariadb.com)... 104.17.191.14, 104.18.135.24, 2606:4700::6812:8718, ...
+Connecting to downloads.mariadb.com (downloads.mariadb.com)|104.17.191.14|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 36328 (35K) [application/octet-stream]
+Saving to: ‘mariadb_repo_setup’
+
+mariadb_repo_setup                                                     100%[===========================================================================================================================================================================>]  35.48K  --.-KB/s    in 0s      
+
+2024-03-24 16:59:07 (86.7 MB/s) - ‘mariadb_repo_setup’ saved [36328/36328]
+
+[root@ip-10-1-11-184 ~]# chmod +x mariadb_repo_setup
+[root@ip-10-1-11-184 ~]# sudo ./mariadb_repo_setup
+# [error] Could not identify OS type or version.
+# [error] # The MariaDB Repository only supports these distributions:
+#    * RHEL/Rocky 8 & 9 (rhel)
+#    * RHEL/CentOS 7 (rhel)
+#    * Ubuntu 18.04 LTS (bionic), 20.04 LTS (focal), & 22.04 LTS (jammy)
+#    * Debian 10 (buster), Debian 11 (bullseye), and Debian 12 (bookworm)
+#    * SLES 12 & 15 (sles)
+[root@ip-10-1-11-184 ~]# sudo yum install perl-DBI libaio libsepol lsof boost-program-options
+sudo yum install --repo="mariadb-main" MariaDB-clientLast metadata expiration check: 0:04:15 ago on Sun Mar 24 16:55:32 2024.
+Package libaio-0.3.111-11.amzn2023.0.2.x86_64 is already installed.
+Package libsepol-3.4-3.amzn2023.0.3.x86_64 is already installed.
+Package lsof-4.94.0-1.amzn2023.0.2.x86_64 is already installed.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                   Architecture                                               Version                                                                        Repository                                                       Size
+===========================================================================================================================================================================================================================================================================================
+Installing:
+ boost-program-options                                                     x86_64                                                     1.75.0-4.amzn2023.0.2                                                          amazonlinux                                                     106 k
+ perl-DBI                                                                  x86_64                                                     1.643-7.amzn2023.0.3                                                           amazonlinux                                                     700 k
+Installing dependencies:
+ perl-B                                                                    x86_64                                                     1.80-477.amzn2023.0.6                                                          amazonlinux                                                     179 k
+ perl-Data-Dumper                                                          x86_64                                                     2.174-460.amzn2023.0.2                                                         amazonlinux                                                      55 k
+ perl-FileHandle                                                           noarch                                                     2.03-477.amzn2023.0.6                                                          amazonlinux                                                      16 k
+ perl-Math-BigInt                                                          noarch                                                     1:1.9998.39-2.amzn2023.0.2                                                     amazonlinux                                                     202 k
+ perl-Math-BigRat                                                          noarch                                                     0.2614-458.amzn2023.0.2                                                        amazonlinux                                                      39 k
+ perl-Math-Complex                                                         noarch                                                     1.59-477.amzn2023.0.6                                                          amazonlinux                                                      47 k
+ perl-base                                                                 noarch                                                     2.27-477.amzn2023.0.6                                                          amazonlinux                                                      17 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Install  9 Packages
+
+Total download size: 1.3 M
+Installed size: 3.7 M
+Is this ok [y/N]: y
+Is this ok [y/N]: y
+Downloading Packages:
+(1/9): perl-DBI-1.643-7.amzn2023.0.3.x86_64.rpm                                                                                                                                                                                                            8.7 MB/s | 700 kB     00:00    
+(2/9): perl-Data-Dumper-2.174-460.amzn2023.0.2.x86_64.rpm                                                                                                                                                                                                  662 kB/s |  55 kB     00:00    
+(3/9): perl-B-1.80-477.amzn2023.0.6.x86_64.rpm                                                                                                                                                                                                             9.6 MB/s | 179 kB     00:00    
+(4/9): perl-base-2.27-477.amzn2023.0.6.noarch.rpm                                                                                                                                                                                                          1.0 MB/s |  17 kB     00:00    
+(5/9): perl-FileHandle-2.03-477.amzn2023.0.6.noarch.rpm                                                                                                                                                                                                    1.3 MB/s |  16 kB     00:00    
+(6/9): perl-Math-BigRat-0.2614-458.amzn2023.0.2.noarch.rpm                                                                                                                                                                                                 2.8 MB/s |  39 kB     00:00    
+(7/9): boost-program-options-1.75.0-4.amzn2023.0.2.x86_64.rpm                                                                                                                                                                                              903 kB/s | 106 kB     00:00    
+(8/9): perl-Math-Complex-1.59-477.amzn2023.0.6.noarch.rpm                                                                                                                                                                                                  3.6 MB/s |  47 kB     00:00    
+(9/9): perl-Math-BigInt-1.9998.39-2.amzn2023.0.2.noarch.rpm                                                                                                                                                                                                7.2 MB/s | 202 kB     00:00    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                                                                                                      6.4 MB/s | 1.3 MB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                                                                                                                                                   1/1 
+  Installing       : perl-B-1.80-477.amzn2023.0.6.x86_64                                                                                                                                                                                                                               1/9 
+  Installing       : perl-Data-Dumper-2.174-460.amzn2023.0.2.x86_64                                                                                                                                                                                                                    2/9 
+  Installing       : perl-Math-Complex-1.59-477.amzn2023.0.6.noarch                                                                                                                                                                                                                    3/9 
+  Installing       : perl-Math-BigInt-1:1.9998.39-2.amzn2023.0.2.noarch                                                                                                                                                                                                                4/9 
+  Installing       : perl-Math-BigRat-0.2614-458.amzn2023.0.2.noarch                                                                                                                                                                                                                   5/9 
+  Installing       : perl-FileHandle-2.03-477.amzn2023.0.6.noarch                                                                                                                                                                                                                      6/9 
+  Installing       : perl-base-2.27-477.amzn2023.0.6.noarch                                                                                                                                                                                                                            7/9 
+  Installing       : perl-DBI-1.643-7.amzn2023.0.3.x86_64                                                                                                                                                                                                                              8/9 
+  Installing       : boost-program-options-1.75.0-4.amzn2023.0.2.x86_64                                                                                                                                                                                                                9/9 
+  Running scriptlet: boost-program-options-1.75.0-4.amzn2023.0.2.x86_64                                                                                                                                                                                                                9/9 
+  Verifying        : perl-DBI-1.643-7.amzn2023.0.3.x86_64                                                                                                                                                                                                                              1/9 
+  Verifying        : perl-Data-Dumper-2.174-460.amzn2023.0.2.x86_64                                                                                                                                                                                                                    2/9 
+  Verifying        : boost-program-options-1.75.0-4.amzn2023.0.2.x86_64                                                                                                                                                                                                                3/9 
+  Verifying        : perl-B-1.80-477.amzn2023.0.6.x86_64                                                                                                                                                                                                                               4/9 
+  Verifying        : perl-base-2.27-477.amzn2023.0.6.noarch                                                                                                                                                                                                                            5/9 
+  Verifying        : perl-FileHandle-2.03-477.amzn2023.0.6.noarch                                                                                                                                                                                                                      6/9 
+  Verifying        : perl-Math-BigRat-0.2614-458.amzn2023.0.2.noarch                                                                                                                                                                                                                   7/9 
+  Verifying        : perl-Math-BigInt-1:1.9998.39-2.amzn2023.0.2.noarch                                                                                                                                                                                                                8/9 
+  Verifying        : perl-Math-Complex-1.59-477.amzn2023.0.6.noarch                                                                                                                                                                                                                    9/9 
+
+Installed:
+  boost-program-options-1.75.0-4.amzn2023.0.2.x86_64 perl-B-1.80-477.amzn2023.0.6.x86_64            perl-DBI-1.643-7.amzn2023.0.3.x86_64   perl-Data-Dumper-2.174-460.amzn2023.0.2.x86_64 perl-FileHandle-2.03-477.amzn2023.0.6.noarch perl-Math-BigInt-1:1.9998.39-2.amzn2023.0.2.noarch
+  perl-Math-BigRat-0.2614-458.amzn2023.0.2.noarch    perl-Math-Complex-1.59-477.amzn2023.0.6.noarch perl-base-2.27-477.amzn2023.0.6.noarch
+
+Complete!
+[root@ip-10-1-11-184 ~]# sudo yum install --repo="mariadb-main" MariaDB-client
+Error: Unknown repo: 'mariadb-main'
+[root@ip-10-1-11-184 ~]# ls
+mariadb_repo_setup  mysql57-community-release-el7-11.noarch.rpm
+[root@ip-10-1-11-184 ~]# cd mariadb
+-bash: cd: mariadb: No such file or directory
+[root@ip-10-1-11-184 ~]# sudo yum update -y
+sLast metadata expiration check: 0:06:39 ago on Sun Mar 24 16:55:32 2024.
+Dependencies resolved.
+Nothing to do.
+Complete!
+[root@ip-10-1-11-184 ~]# sudo yum install -y mariadb-server
+Last metadata expiration check: 0:06:51 ago on Sun Mar 24 16:55:32 2024.
+No match for argument: mariadb-server
+Error: Unable to find a match: mariadb-server
+[root@ip-10-1-11-184 ~]# ls
+mariadb_repo_setup  mysql57-community-release-el7-11.noarch.rpm
+[root@ip-10-1-11-184 ~]# sudo yum install mysql-community-server
+Last metadata expiration check: 0:11:12 ago on Sun Mar 24 16:55:32 2024.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                  Architecture                                             Version                                                                       Repository                                                           Size
+===========================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   184 M
+Installing dependencies:
+ libxcrypt-compat                                                         x86_64                                                   4.4.33-7.amzn2023                                                             amazonlinux                                                          92 k
+ mysql-community-client                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                    31 M
+ mysql-community-common                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   313 k
+ mysql-community-libs                                                     x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   3.0 M
+ ncurses-compat-libs                                                      x86_64                                                   6.2-4.20200222.amzn2023.0.6                                                   amazonlinux                                                         323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Install  6 Packages
+
+Total download size: 219 M
+Installed size: 931 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/6): libxcrypt-compat-4.4.33-7.amzn2023.x86_64.rpm                                                                                                                                                                                                       1.5 MB/s |  92 kB     00:00    
+(2/6): mysql-community-common-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                      6.0 MB/s | 313 kB     00:00    
+(3/6): ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm                                                                                                                                                                                          2.6 MB/s | 323 kB     00:00    
+(4/6): mysql-community-libs-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                         36 MB/s | 3.0 MB     00:00    
+(5/6): mysql-community-client-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                       49 MB/s |  31 MB     00:00    
+(6/6): mysql-community-server-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                       62 MB/s | 184 MB     00:02    
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                                                                                                       69 MB/s | 219 MB     00:03     
+MySQL 5.7 Community Server                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+GPG key at file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql (0x5072E1F5) is already installed
+The GPG keys listed for the "MySQL 5.7 Community Server" repository are already installed but they are not correct for this package.
+Check that the correct key URLs are configured for this repository.. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-common-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-common-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-libs-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-libs-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+[mysql-connectors-community]
+name=MySQL Connectors Community
+baseurl=http://repo.mysql.com/yum/mysql-connectors-community/el/7/$basearch/
+enabled=1
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+[mysql-tools-community]
+name=MySQL Tools Community
+baseurl=http://repo.mysql.com/yum/mysql-tools-community/el/7/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+# Enable to use MySQL 5.5
+[mysql55-community]
+name=MySQL 5.5 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.5-community/el/7/$basearch/
+
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[root@ip-10-1-11-184 ~]# yum install --nogpgcheck mysql-community-client-5.7.44-1.e17.x86_64
+Last metadata expiration check: 0:15:05 ago on Sun Mar 24 16:55:32 2024.
+No match for argument: mysql-community-client-5.7.44-1.e17.x86_64
+Error: Unable to find a match: mysql-community-client-5.7.44-1.e17.x86_64
+[root@ip-10-1-11-184 ~]# ls
+mariadb_repo_setup  mysql57-community-release-el7-11.noarch.rpm
+[root@ip-10-1-11-184 ~]# cd ../
+[root@ip-10-1-11-184 /]# ls
+bin  boot  dev  etc  home  lib  lib64  local  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@ip-10-1-11-184 /]# cd etc
+[root@ip-10-1-11-184 etc]# ls
+DIR_COLORS               amazon-linux-release-cpe  cifs-utils       default        fstab          gss                 iproute2       libibverbs.d    magic           nfs.conf       pki        rc3.d             rwtab.d        ssh         sysconfig           vimrc
+DIR_COLORS.lightbgcolor  at.deny                   cloud            depmod.d       gcrypt         gssproxy            issue          libnl           man_db.conf     nfsmount.conf  pm         rc4.d             sasl2          ssl         sysctl.conf         virc
+GREP_COLORS              audit                     cron.daily       dhcp           gnupg          hibinit-config.cfg  issue.net      libreport       mke2fs.conf     nsswitch.conf  popt.d     rc5.d             screenrc       sssd        sysctl.d            wgetrc
+NetworkManager           bash_completion.d         cron.hourly      dnf            groff          host.conf           kernel         libuser.conf    modprobe.d      openldap       printcap   rc6.d             security       statetab.d  system-release      xattr.conf
+X11                      bashrc                    cron.monthly     dracut.conf    group          hostname            keyutils       locale.conf     modules-load.d  opt            profile    request-key.conf  selinux        subgid      system-release-cpe  xdg
+acpi                     bindresvport.blacklist    cron.weekly      dracut.conf.d  group-         hosts               krb5.conf      localtime       motd            os-release     profile.d  request-key.d     services       subgid-     systemd             yum.repos.d
+adjtime                  binfmt.d                  crontab          environment    grub.d         idmapd.conf         krb5.conf.d    login.defs      motd.d          pam.d          protocols  resolv.conf       sestatus.conf  subuid      terminfo
+aliases                  chkconfig.d               crypto-policies  ethertypes     grub2-efi.cfg  image-id            ld.so.cache    logrotate.conf  mtab            passwd         rc.d       rpc               shadow         subuid-     tmpfiles.d
+alternatives             chrony.conf               csh.cshrc        exports        grub2.cfg      init.d              ld.so.conf     logrotate.d     nanorc          passwd-        rc0.d      rpm               shadow-        sudo.conf   trusted-key.key
+amazon                   chrony.d                  csh.login        exports.d      gshadow        inittab             ld.so.conf.d   lsm             netconfig       pkcs11         rc1.d      rsyncd.conf       shells         sudoers     udev
+amazon-linux-release     chrony.keys               dbus-1           filesystems    gshadow-       inputrc             libaudit.conf  machine-id      networks        pkgconfig      rc2.d      rsyslog.d         skel           sudoers.d   update-motd.d
+[root@ip-10-1-11-184 etc]# cd yum.repos.d
+[root@ip-10-1-11-184 yum.repos.d]# ls
+amazonlinux.repo  kernel-livepatch.repo  mysql-community-source.repo  mysql-community.repo
+[root@ip-10-1-11-184 yum.repos.d]# vim mysql-community.repo
+[root@ip-10-1-11-184 yum.repos.d]# cd ../
+[root@ip-10-1-11-184 etc]# cd ../
+[root@ip-10-1-11-184 /]# ls
+bin  boot  dev  etc  home  lib  lib64  local  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@ip-10-1-11-184 /]# sudo yum install mysql-community-server
+MySQL Connectors Community                                                                                                                                                                                                                                  84 kB/s | 2.6 kB     00:00    
+MySQL Tools Community                                                                                                                                                                                                                                      116 kB/s | 2.6 kB     00:00    
+MySQL 5.7 Community Server                                                                                                                                                                                                                                 141 kB/s | 2.6 kB     00:00    
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================
+ Package                                                                  Architecture                                             Version                                                                       Repository                                                           Size
+===========================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   184 M
+Installing dependencies:
+ libxcrypt-compat                                                         x86_64                                                   4.4.33-7.amzn2023                                                             amazonlinux                                                          92 k
+ mysql-community-client                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                    31 M
+ mysql-community-common                                                   x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   313 k
+ mysql-community-libs                                                     x86_64                                                   5.7.44-1.el7                                                                  mysql57-community                                                   3.0 M
+ ncurses-compat-libs                                                      x86_64                                                   6.2-4.20200222.amzn2023.0.6                                                   amazonlinux                                                         323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================
+Install  6 Packages
+
+Total size: 219 M
+Installed size: 931 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                  
+[SKIPPED] libxcrypt-compat-4.4.33-7.amzn2023.x86_64.rpm: Already downloaded                                                                                                                                                                                                               
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                              
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                
+[SKIPPED] mysql-community-server-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                              
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                                                                                                                                                   1/1 
+  Installing       : mysql-community-common-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        1/6 
+  Installing       : mysql-community-libs-5.7.44-1.el7.x86_64                                                                                                                                                                                                                          2/6 
+  Running scriptlet: mysql-community-libs-5.7.44-1.el7.x86_64                                                                                                                                                                                                                          2/6 
+  Installing       : libxcrypt-compat-4.4.33-7.amzn2023.x86_64                                                                                                                                                                                                                         3/6 
+  Installing       : ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64                                                                                                                                                                                                            4/6 
+  Installing       : mysql-community-client-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        5/6 
+  Running scriptlet: mysql-community-server-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        6/6 
+  Installing       : mysql-community-server-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        6/6 
+  Running scriptlet: mysql-community-server-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        6/6 
+/usr/lib/tmpfiles.d/mysql.conf:23: Line references path below legacy directory /var/run/, updating /var/run/mysqld → /run/mysqld; please update the tmpfiles.d/ drop-in file accordingly.
+
+  Verifying        : ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64                                                                                                                                                                                                            1/6 
+  Verifying        : libxcrypt-compat-4.4.33-7.amzn2023.x86_64                                                                                                                                                                                                                         2/6 
+  Verifying        : mysql-community-client-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        3/6 
+  Verifying        : mysql-community-common-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        4/6 
+  Verifying        : mysql-community-libs-5.7.44-1.el7.x86_64                                                                                                                                                                                                                          5/6 
+  Verifying        : mysql-community-server-5.7.44-1.el7.x86_64                                                                                                                                                                                                                        6/6 
+
+Installed:
+  libxcrypt-compat-4.4.33-7.amzn2023.x86_64   mysql-community-client-5.7.44-1.el7.x86_64   mysql-community-common-5.7.44-1.el7.x86_64   mysql-community-libs-5.7.44-1.el7.x86_64   mysql-community-server-5.7.44-1.el7.x86_64   ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64  
+
+Complete!
+[root@ip-10-1-11-184 /]# mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 95
+Server version: 8.0.35 Source distribution
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.04 sec)
+
+mysql> USE udacity;
+ERROR 1049 (42000): Unknown database 'udacity'
+mysql> create table people (ID int PRIMARY KEY, FirstName varchar(255), LastName varchar(255));
+ERROR 1046 (3D000): No database selected
+mysql> CREATE DATABASE UDACITY
+    -> ^C
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE table TblUni
+    -> -> (
+    -> -> id int,
+    -> -> Name varchar(100)
+    -> -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> (
+-> id int,
+-> Name varchar(100)
+-> )' at line 2
+mysql> USE mysql
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> CREATE TABLE pet (name VARCHAR(20), owner VARCHAR(20),
+    ->      species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);
+ERROR 1044 (42000): Access denied for user 'admin'@'%' to database 'mysql'
+mysql> CREATE DATABASE menagerie;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE menagerie
+Database changed
+mysql> mysql -h host -u user -p menagerie
+    -> 1rain2day
+    -> 
+    -> ^C
+mysql> mysql -h host -u user -p menagerie
+    -> 
+    -> ^C
+mysql> SHOW TABLES;
+Empty set (0.00 sec)
+
+mysql> CREATE TABLE pet (name VARCHAR(20), owner VARCHAR(20),
+    ->     -> species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> species VARCHAR(20), sex CHAR(1), birth DATE, death DATE)' at line 2
+mysql> CREATE TABLE pet (name VARCHAR(20), owner VARCHAR(20),  species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> SHOW TABLES;
++---------------------+
+| Tables_in_menagerie |
++---------------------+
+| pet                 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> DESCRIBE pet;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| name    | varchar(20) | YES  |     | NULL    |       |
+| owner   | varchar(20) | YES  |     | NULL    |       |
+| species | varchar(20) | YES  |     | NULL    |       |
+| sex     | char(1)     | YES  |     | NULL    |       |
+| birth   | date        | YES  |     | NULL    |       |
+| death   | date        | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> 
+Display all 763 possibilities? (y or n) 
+mysql> LOAD DATA LOCAL INFILE "pet.txt" INTO TABLE pet
+    -> ^C
+mysql> LOAD DATA LOCAL INFILE "pet.txt" INTO TABLE pet;
+ERROR 2 (HY000): File 'pet.txt' not found (Errcode: 2 - No such file or directory)
+mysql> ls
+    -> [3~
+    -> 
+    -> [3~
+    -> 
+    -> 
+    -> 
+    -> 
+    -> 
+    -> \
+    -> 
+    -> 
+    -> 
+    -> ^C
+mysql> cp -a /home/cloudshell-user/. /dest/
+    -> [3~
+    -> 
+    -> 
+    -> cp -a /home/cloudshell-user/. .
+    -> ls
+    -> :q
+    -> q
+    -> ^C
+mysql> ls
+    -> cd ../
+    -> 
+[1]+  Stopped                 mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+[root@ip-10-1-11-184 /]# mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 102
+Server version: 8.0.35 Source distribution
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> ls
+    -> :q
+    -> q
+    -> xit
+    -> exit
+    -> ls
+    -> 
+[2]+  Stopped                 mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+[root@ip-10-1-11-184 /]# ls
+bin  boot  dev  etc  home  lib  lib64  local  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@ip-10-1-11-184 /]# cp -a /home/cloudshell-user/pet.txt .
+cp: cannot stat '/home/cloudshell-user/pet.txt': No such file or directory
+[root@ip-10-1-11-184 /]# ls home/cloudshell-user
+ls: cannot access 'home/cloudshell-user': No such file or directory
+[root@ip-10-1-11-184 /]# ls /home/cloudshell-user
+ls: cannot access '/home/cloudshell-user': No such file or directory
+[root@ip-10-1-11-184 /]# mysql -h udacity.cdez9socylxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 104
+Server version: 8.0.35 Source distribution
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> LOAD DATA LOCAL INFILE "pet.txt" INTO TABLE pet;
+ERROR 1046 (3D000): No database selected
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| menagerie          |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use menagerie;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> LOAD DATA LOCAL INFILE "pet.txt" INTO TABLE pet;
+ERROR 2 (HY000): File 'pet.txt' not found (Errcode: 2 - No such file or directory)
+mysql> LOAD DATA LOCAL INFILE "/home/cloudshell-user/pet.txt" INTO TABLE pet;
+ERROR 2 (HY000): File '/home/cloudshell-user/pet.txt' not found (Errcode: 2 - No such file or directory)
+mysql> INSERT INTO pet
+    ->     VALUES ('Puffball','Diane','hamster','f','1999-03-30',NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM pet
+    -> ^C
+mysql> ^C
+mysql> SELECT * FROM pet;
++----------+-------+---------+------+------------+-------+
+| name     | owner | species | sex  | birth      | death |
++----------+-------+---------+------+------------+-------+
+| Puffball | Diane | hamster | f    | 1999-03-30 | NULL  |
++----------+-------+---------+------+------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from pet where name = "Puffball";
++----------+-------+---------+------+------------+-------+
+| name     | owner | species | sex  | birth      | death |
++----------+-------+---------+------+------------+-------+
+| Puffball | Diane | hamster | f    | 1999-03-30 | NULL  |
++----------+-------+---------+------+------------+-------+
+1 row in set (0.00 sec)
