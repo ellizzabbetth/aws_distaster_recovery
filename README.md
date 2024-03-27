@@ -153,6 +153,11 @@ Build a resilient static web hosting solution in AWS. Create a versioned S3 buck
 2. Upload the files from the GitHub repo (under `/project/s3/`)
 3. Paste URL into a web browser to see your website. 
 
+
+https://www.youtube.com/watch?v=-l83oqcaTHg
+
+http://udacity-disaster-recovery-aws-website.s3-website-us-east-1.amazonaws.com/
+
 **Save** the screenshot of the webpage. Name your screenshot "s3_original.png"
 You will now “accidentally” change the contents of the website such that it is no longer serving the correct content
 

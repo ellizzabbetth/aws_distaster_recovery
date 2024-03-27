@@ -1,0 +1,55 @@
+[cloudshell-user@ip-10-134-87-212 ~]$ ls
+ec2-standby.pem  udacity-ec2-recoverability.pem
+[cloudshell-user@ip-10-134-87-212 ~]$ mysql -h udacity-read-replica.cfrjlbebb2xi.us-west-2.rds.amazonaws.com -P 3306 -u admin -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12
+Server version: 8.0.35 Source distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| menagerie          |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.004 sec)
+
+MySQL [(none)]> DESCRIBE pet;
+ERROR 1046 (3D000): No database selected
+MySQL [(none)]> USE menagerie
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MySQL [menagerie]> DESCRIBE pet;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| name    | varchar(20) | YES  |     | NULL    |       |
+| owner   | varchar(20) | YES  |     | NULL    |       |
+| species | varchar(20) | YES  |     | NULL    |       |
+| sex     | char(1)     | YES  |     | NULL    |       |
+| birth   | date        | YES  |     | NULL    |       |
+| death   | date        | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.004 sec)
+
+MySQL [menagerie]> INSERT INTO pet VALUES ('Mocha', 'Brian', 'dog', 'f', '1990-01-01', NULL);
+Query OK, 1 row affected (0.010 sec)
+
+MySQL [menagerie]> SELECT * from pet;
++----------+-------+---------+------+------------+-------+
+| name     | owner | species | sex  | birth      | death |
++----------+-------+---------+------+------------+-------+
+| Puffball | Diane | hamster | f    | 1999-03-30 | NULL  |
+| Mocha    | Brian | dog     | f    | 1990-01-01 | NULL  |
++----------+-------+---------+------+------------+-------+
+2 rows in set (0.005 sec)

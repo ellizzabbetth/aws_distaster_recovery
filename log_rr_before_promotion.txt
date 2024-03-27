@@ -1,0 +1,91 @@
+  Verifying        : mysql-community-server-5.7.44-1.el7.x86_64                                                                                                                                                              6
+Installed:
+  libxcrypt-compat-4.4.33-7.amzn2023.x86_64            mysql-community-client-5.7.44-1.el7.x86_64                       mysql-community-common-5.7.44-1.el7.x86_64           mysql-community-libs-5.7.44-1.el7.x86_64          
+  mysql-community-server-5.7.44-1.el7.x86_64           ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64          
+
+Complete!
+[root@ip-10-2-10-6 ~]# sudo yum install mysql-community-server
+Installed:
+Package mysql-community-server-5.7.44-1.el7.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+[root@ip-10-2-10-6 ~]# systemctl start mysqld.service
+[root@ip-10-2-10-6 ~]# SHOW DATABASES;
+-bash: SHOW: command not found
+[root@ip-10-2-10-6 ~]# yum install mysql
+Last metadata expiration check: 0:11:52 ago on Wed Mar 27 15:19:51 2024.
+Package mysql-community-client-5.7.44-1.el7.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+[root@ip-10-2-10-6 ~]# exit
+logout
+[ec2-user@ip-10-2-10-6 ~]$ mysql -h udacity-read-replica.cfrjlbebb2xi.us-west-2.rds.amazonaws.com -P 3306 -u admin -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 35
+Server version: 8.0.35 Source distribution
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| menagerie          |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> USE menagerie
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> DESCRIBE pet
+    -> ^C
+mysql> DESCRIBE pet;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| name    | varchar(20) | YES  |     | NULL    |       |
+| owner   | varchar(20) | YES  |     | NULL    |       |
+| species | varchar(20) | YES  |     | NULL    |       |
+| sex     | char(1)     | YES  |     | NULL    |       |
+| birth   | date        | YES  |     | NULL    |       |
+| death   | date        | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO pet VALUES ('Mocha', 'Brian', 'dog', 'f', '1990-01-01', NULL);
+ERROR 1290 (HY000): The MySQL server is running with the --read-only option so it cannot execute this statement
+mysql> SELECT * from pet;
++----------+-------+---------+------+------------+-------+
+| name     | owner | species | sex  | birth      | death |
++----------+-------+---------+------+------------+-------+
+| Puffball | Diane | hamster | f    | 1999-03-30 | NULL  |
++----------+-------+---------+------+------------+-------+
+1 row in set (0.01 sec)
+
+mysql> stdout > log_rr_before_promotion.txt
+    -> ^C
+mysql> stdout > log_rr_before_promotion.txt;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stdout > log_rr_before_promotion.txt' at line 1
+mysql> exit
+Bye
+[ec2-user@ip-10-2-10-6 ~]$ stdout > log_rr_before_promotion.txt;
+-bash: stdout: command not found
+[ec2-user@ip-10-2-10-6 ~]$ exec &>> log_rr_before_promotion.txt;
+
+https://serverfault.com/questions/894457/amazon-linux-2-ami-aws-how-to-install-mysql-in-amazon-linux-2
+yum install --nogpgcheck your_package
