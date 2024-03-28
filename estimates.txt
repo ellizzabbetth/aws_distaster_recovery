@@ -16,7 +16,6 @@ RTO represents how many hours it takes you to return to a working state after a 
 
 RPO, which is also expressed in hours, represents how much data you could lose when a disaster happens. For example, an RPO of 1 hour means that you could lose up to 1 hour’s worth of data when a disaster occurs.
 
-
 Amazon RDS for SQL Server provides a Multi-AZ deployment, which replicates data synchronously across Availability Zones. This is a highly available (HA) Multi-AZ deployment 
 which is a solid Disaster Recovery strategy.
 
@@ -25,8 +24,8 @@ which is a solid Disaster Recovery strategy.
 | Time  | Description                                                |Time Estimation |
 | ----- | ---------------------------------------------------------- |----------------|
 | 00:00 | Problem occurs                                             | -      |
-| 00:05 | Time before an alert triggers                              | 3 min  |
-| 00:06 | Switch to another availability zone                        | 1 min  |
+| 00:03 | Time before an alert triggers                              | 3 min  |
+| 00:01 | Switch to another availability zone                        | 1 min  |
 
 **Total time < 5 mins**
 

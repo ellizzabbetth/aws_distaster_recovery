@@ -1,3 +1,585 @@
+
+
+[cloudshell-user@ip-10-134-90-175 ~]$  ssh -i "ec2-standby.pem" ec2-user@ec2-35-86-108-240.us-west-2.compute.amazonaws.com
+The authenticity of host 'ec2-35-86-108-240.us-west-2.compute.amazonaws.com (35.86.108.240)' can't be established.
+ED25519 key fingerprint is SHA256:v1bt691Er7riTHbm38gi/Oc/nl0l9kO5wucInJ1V314.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ec2-35-86-108-240.us-west-2.compute.amazonaws.com' (ED25519) to the list of known hosts.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0644 for 'ec2-standby.pem' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "ec2-standby.pem": bad permissions
+ec2-user@ec2-35-86-108-240.us-west-2.compute.amazonaws.com: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+--2024-03-28 12:56:23--  https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+Resolving dev.mysql.com (dev.mysql.com)... 23.6.106.166, 2600:1405:1800:396::2e31, 2600:1405:1800:380::2e31
+Connecting to dev.mysql.com (dev.mysql.com)|23.6.106.166|:443... connected.
+HTTP request sent, awaiting response... 302 Moved Temporarily
+Location: https://repo.mysql.com//mysql57-community-release-el7-11.noarch.rpm [following]
+--2024-03-28 12:56:23--  https://repo.mysql.com//mysql57-community-release-el7-11.noarch.rpm
+Resolving repo.mysql.com (repo.mysql.com)... 23.37.218.50, 2600:1409:9800:983::1d68, 2600:1409:9800:988::1d68
+Connecting to repo.mysql.com (repo.mysql.com)|23.37.218.50|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 25680 (25K) [application/x-redhat-package-manager]
+Saving to: ‘mysql57-community-release-el7-11.noarch.rpm’
+
+mysql57-community-release-el7-11.noarch.rpm                                    100%[===================================================================================================================================================================================================>]  25.08K  --.-KB/s    in 0.004s  
+
+2024-03-28 12:56:23 (6.93 MB/s) - ‘mysql57-community-release-el7-11.noarch.rpm’ saved [25680/25680]
+
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum localinstall mysql57-community-release-el7-11.noarch.rpm 
+Last metadata expiration check: 0:00:45 ago on Thu 28 Mar 2024 12:55:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                                  Architecture                                                          Version                                                                  Repository                                                                   Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql57-community-release                                                                noarch                                                                el7-11                                                                   @commandline                                                                 25 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  1 Package
+
+Total size: 25 k
+Installed size: 31 k
+Is this ok [y/N]: y
+Downloading Packages:
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                                                                                                                                                                                   1/1 
+  Installing       : mysql57-community-release-el7-11.noarch                                                                                                                                                                                                                                                           1/1 
+  Verifying        : mysql57-community-release-el7-11.noarch                                                                                                                                                                                                                                                           1/1 
+
+Installed:
+  mysql57-community-release-el7-11.noarch                                                                                                                                                                                                                                                                                  
+
+Complete!
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install --nogpgcheck mysql-community-client-5.7.44-1.el7.x86_64
+MySQL Connectors Community                                                                                                                                                                                                                                                                 1.2 MB/s |  68 kB     00:00    
+MySQL Tools Community                                                                                                                                                                                                                                                                       12 MB/s | 1.1 MB     00:00    
+MySQL 5.7 Community Server                                                                                                                                                                                                                                                                  22 MB/s | 3.1 MB     00:00    
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                          Architecture                                                     Version                                                                               Repository                                                                   Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-client                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                            31 M
+Installing dependencies:
+ mysql-community-common                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                           313 k
+ mysql-community-libs                                                             x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                           3.0 M
+ ncurses-compat-libs                                                              x86_64                                                           6.2-4.20200222.amzn2023.0.6                                                           amazonlinux                                                                 323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  4 Packages
+
+Total download size: 35 M
+Installed size: 135 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/4): ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm                                                                                                                                                                                                                          3.6 MB/s | 323 kB     00:00    
+(2/4): mysql-community-common-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                                                      2.8 MB/s | 313 kB     00:00    
+(3/4): mysql-community-libs-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                                                         25 MB/s | 3.0 MB     00:00    
+(4/4): mysql-community-client-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                                                       54 MB/s |  31 MB     00:00    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                                                                                                                                       51 MB/s |  35 MB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: Transaction test error:
+  file /usr/bin/mysql from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqladmin from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlbinlog from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlcheck from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqldump from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlimport from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlshow from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlslap from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysql.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqladmin.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlbinlog.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlcheck.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqldump.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlimport.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlshow.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlslap.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install mysql-community-server
+Last metadata expiration check: 0:00:18 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                        Architecture                                                   Version                                                                                     Repository                                                                 Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         184 M
+Installing dependencies:
+ libaio                                                                         x86_64                                                         0.3.111-11.amzn2023.0.2                                                                     amazonlinux                                                                24 k
+ mysql-community-client                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                          31 M
+ mysql-community-common                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         313 k
+ mysql-community-libs                                                           x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         3.0 M
+ ncurses-compat-libs                                                            x86_64                                                         6.2-4.20200222.amzn2023.0.6                                                                 amazonlinux                                                               323 k
+ net-tools                                                                      x86_64                                                         2.0-0.59.20160912git.amzn2023.0.3                                                           amazonlinux                                                               295 k
+ numactl-libs                                                                   x86_64                                                         2.0.14-3.amzn2023.0.3                                                                       amazonlinux                                                                30 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  8 Packages
+
+Total size: 219 M
+Total download size: 184 M
+Installed size: 932 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                
+(5/8): numactl-libs-2.0.14-3.amzn2023.0.3.x86_64.rpm                                                                                                                                                                                                                                       459 kB/s |  30 kB     00:00    
+(6/8): libaio-0.3.111-11.amzn2023.0.2.x86_64.rpm                                                                                                                                                                                                                                           342 kB/s |  24 kB     00:00    
+(7/8): net-tools-2.0-0.59.20160912git.amzn2023.0.3.x86_64.rpm                                                                                                                                                                                                                              2.8 MB/s | 295 kB     00:00    
+(8/8): mysql-community-server-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                                                       46 MB/s | 184 MB     00:04    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                                                                                                                                       44 MB/s | 184 MB     00:04     
+MySQL 5.7 Community Server                                                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+Importing GPG key 0x5072E1F5:
+ Userid     : "MySQL Release Engineering <mysql-build@oss.oracle.com>"
+ Fingerprint: A4A9 4068 76FC BD3C 4567 70C8 8C71 8D3B 5072 E1F5
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Is this ok [y/N]: y
+Key imported successfully
+Import of key(s) didn't help, wrong key(s)?
+Public key for mysql-community-client-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-common-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-common-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-libs-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-libs-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install --nogpgcheck mysql-community-client-5.7.44-1.el7.x86_64
+Last metadata expiration check: 0:00:43 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                          Architecture                                                     Version                                                                               Repository                                                                   Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-client                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                            31 M
+Installing dependencies:
+ mysql-community-common                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                           313 k
+ mysql-community-libs                                                             x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                           3.0 M
+ ncurses-compat-libs                                                              x86_64                                                           6.2-4.20200222.amzn2023.0.6                                                           amazonlinux                                                                 323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  4 Packages
+
+Total size: 35 M
+Installed size: 135 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: Transaction test error:
+  file /usr/bin/mysql from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqladmin from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlbinlog from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlcheck from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqldump from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlimport from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlshow from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlslap from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysql.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqladmin.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlbinlog.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlcheck.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqldump.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlimport.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlshow.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlslap.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install mysql-community-server
+Last metadata expiration check: 0:00:48 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                        Architecture                                                   Version                                                                                     Repository                                                                 Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         184 M
+Installing dependencies:
+ libaio                                                                         x86_64                                                         0.3.111-11.amzn2023.0.2                                                                     amazonlinux                                                                24 k
+ mysql-community-client                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                          31 M
+ mysql-community-common                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         313 k
+ mysql-community-libs                                                           x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         3.0 M
+ ncurses-compat-libs                                                            x86_64                                                         6.2-4.20200222.amzn2023.0.6                                                                 amazonlinux                                                               323 k
+ net-tools                                                                      x86_64                                                         2.0-0.59.20160912git.amzn2023.0.3                                                           amazonlinux                                                               295 k
+ numactl-libs                                                                   x86_64                                                         2.0.14-3.amzn2023.0.3                                                                       amazonlinux                                                                30 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  8 Packages
+
+Total size: 219 M
+Installed size: 932 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] numactl-libs-2.0.14-3.amzn2023.0.3.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                               
+[SKIPPED] libaio-0.3.111-11.amzn2023.0.2.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                   
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] net-tools-2.0-0.59.20160912git.amzn2023.0.3.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                      
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                
+[SKIPPED] mysql-community-server-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+MySQL 5.7 Community Server                                                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+GPG key at file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql (0x5072E1F5) is already installed
+The GPG keys listed for the "MySQL 5.7 Community Server" repository are already installed but they are not correct for this package.
+Check that the correct key URLs are configured for this repository.. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-common-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-common-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-libs-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-libs-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install --nogpgcheck mysql-community-client-5.7.44-1.el7.x86_64
+Last metadata expiration check: 0:01:35 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                          Architecture                                                     Version                                                                               Repository                                                                   Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-client                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                            31 M
+Installing dependencies:
+ mysql-community-common                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                           313 k
+ mysql-community-libs                                                             x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                           3.0 M
+ ncurses-compat-libs                                                              x86_64                                                           6.2-4.20200222.amzn2023.0.6                                                           amazonlinux                                                                 323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  4 Packages
+
+Total size: 35 M
+Installed size: 135 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: Transaction test error:
+  file /usr/bin/mysql from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqladmin from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlbinlog from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlcheck from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqldump from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlimport from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlshow from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlslap from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysql.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqladmin.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlbinlog.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlcheck.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqldump.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlimport.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlshow.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlslap.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install mysql-community-server
+Last metadata expiration check: 0:01:41 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                        Architecture                                                   Version                                                                                     Repository                                                                 Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         184 M
+Installing dependencies:
+ libaio                                                                         x86_64                                                         0.3.111-11.amzn2023.0.2                                                                     amazonlinux                                                                24 k
+ mysql-community-client                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                          31 M
+ mysql-community-common                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         313 k
+ mysql-community-libs                                                           x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         3.0 M
+ ncurses-compat-libs                                                            x86_64                                                         6.2-4.20200222.amzn2023.0.6                                                                 amazonlinux                                                               323 k
+ net-tools                                                                      x86_64                                                         2.0-0.59.20160912git.amzn2023.0.3                                                           amazonlinux                                                               295 k
+ numactl-libs                                                                   x86_64                                                         2.0.14-3.amzn2023.0.3                                                                       amazonlinux                                                                30 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  8 Packages
+
+Total size: 219 M
+Installed size: 932 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] numactl-libs-2.0.14-3.amzn2023.0.3.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                               
+[SKIPPED] libaio-0.3.111-11.amzn2023.0.2.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                   
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] net-tools-2.0-0.59.20160912git.amzn2023.0.3.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                      
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                
+[SKIPPED] mysql-community-server-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+MySQL 5.7 Community Server                                                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+GPG key at file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql (0x5072E1F5) is already installed
+The GPG keys listed for the "MySQL 5.7 Community Server" repository are already installed but they are not correct for this package.
+Check that the correct key URLs are configured for this repository.. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-common-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-common-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-libs-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-libs-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install --nogpgcheck mysql-community-libs-5.7.44-1.el7.x86_64
+Last metadata expiration check: 0:02:47 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                             Architecture                                                        Version                                                                      Repository                                                                      Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-libs                                                                x86_64                                                              5.7.44-1.el7                                                                 mysql57-community                                                              3.0 M
+Installing dependencies:
+ mysql-community-common                                                              x86_64                                                              5.7.44-1.el7                                                                 mysql57-community                                                              313 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  2 Packages
+
+Total size: 3.3 M
+Installed size: 14 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] mysql-community-common-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-libs-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                                                                                                                                                                                                                                                                   1/1 
+  Installing       : mysql-community-common-5.7.44-1.el7.x86_64                                                                                                                                                                                                                                                        1/2 
+  Installing       : mysql-community-libs-5.7.44-1.el7.x86_64                                                                                                                                                                                                                                                          2/2 
+  Running scriptlet: mysql-community-libs-5.7.44-1.el7.x86_64                                                                                                                                                                                                                                                          2/2 
+  Verifying        : mysql-community-common-5.7.44-1.el7.x86_64                                                                                                                                                                                                                                                        1/2 
+  Verifying        : mysql-community-libs-5.7.44-1.el7.x86_64                                                                                                                                                                                                                                                          2/2 
+
+Installed:
+  mysql-community-common-5.7.44-1.el7.x86_64                                                                                                                    mysql-community-libs-5.7.44-1.el7.x86_64                                                                                                                   
+
+Complete!
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install mysql-community-server
+Last metadata expiration check: 0:02:54 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                        Architecture                                                   Version                                                                                     Repository                                                                 Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         184 M
+Installing dependencies:
+ libaio                                                                         x86_64                                                         0.3.111-11.amzn2023.0.2                                                                     amazonlinux                                                                24 k
+ mysql-community-client                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                          31 M
+ ncurses-compat-libs                                                            x86_64                                                         6.2-4.20200222.amzn2023.0.6                                                                 amazonlinux                                                               323 k
+ net-tools                                                                      x86_64                                                         2.0-0.59.20160912git.amzn2023.0.3                                                           amazonlinux                                                               295 k
+ numactl-libs                                                                   x86_64                                                         2.0.14-3.amzn2023.0.3                                                                       amazonlinux                                                                30 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  6 Packages
+
+Total download size: 216 M
+Installed size: 917 M
+Is this ok [y/N]: y
+Downloading Packages:
+(1/6): numactl-libs-2.0.14-3.amzn2023.0.3.x86_64.rpm                                                                                                                                                                                                                                       353 kB/s |  30 kB     00:00    
+(2/6): libaio-0.3.111-11.amzn2023.0.2.x86_64.rpm                                                                                                                                                                                                                                           249 kB/s |  24 kB     00:00    
+(3/6): net-tools-2.0-0.59.20160912git.amzn2023.0.3.x86_64.rpm                                                                                                                                                                                                                              7.7 MB/s | 295 kB     00:00    
+(4/6): ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm                                                                                                                                                                                                                          2.2 MB/s | 323 kB     00:00    
+(5/6): mysql-community-client-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                                                       58 MB/s |  31 MB     00:00    
+(6/6): mysql-community-server-5.7.44-1.el7.x86_64.rpm                                                                                                                                                                                                                                       59 MB/s | 184 MB     00:03    
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                                                                                                                                                                       64 MB/s | 216 MB     00:03     
+MySQL 5.7 Community Server                                                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+GPG key at file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql (0x5072E1F5) is already installed
+The GPG keys listed for the "MySQL 5.7 Community Server" repository are already installed but they are not correct for this package.
+Check that the correct key URLs are configured for this repository.. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install --nogpgcheck mysql-community-client-5.7.44-1.el7.x86_64
+Last metadata expiration check: 0:03:30 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                          Architecture                                                     Version                                                                               Repository                                                                   Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-client                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                            31 M
+Installing dependencies:
+ ncurses-compat-libs                                                              x86_64                                                           6.2-4.20200222.amzn2023.0.6                                                           amazonlinux                                                                 323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  2 Packages
+
+Total size: 31 M
+Installed size: 121 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: Transaction test error:
+  file /usr/bin/mysql from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqladmin from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlbinlog from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlcheck from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqldump from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlimport from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlshow from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlslap from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysql.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqladmin.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlbinlog.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlcheck.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqldump.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlimport.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlshow.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlslap.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install mysql-community-server
+Last metadata expiration check: 0:03:48 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                        Architecture                                                   Version                                                                                     Repository                                                                 Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-server                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                         184 M
+Installing dependencies:
+ libaio                                                                         x86_64                                                         0.3.111-11.amzn2023.0.2                                                                     amazonlinux                                                                24 k
+ mysql-community-client                                                         x86_64                                                         5.7.44-1.el7                                                                                mysql57-community                                                          31 M
+ ncurses-compat-libs                                                            x86_64                                                         6.2-4.20200222.amzn2023.0.6                                                                 amazonlinux                                                               323 k
+ net-tools                                                                      x86_64                                                         2.0-0.59.20160912git.amzn2023.0.3                                                           amazonlinux                                                               295 k
+ numactl-libs                                                                   x86_64                                                         2.0.14-3.amzn2023.0.3                                                                       amazonlinux                                                                30 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  6 Packages
+
+Total size: 216 M
+Installed size: 917 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] numactl-libs-2.0.14-3.amzn2023.0.3.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                               
+[SKIPPED] libaio-0.3.111-11.amzn2023.0.2.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                                   
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] net-tools-2.0-0.59.20160912git.amzn2023.0.3.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                      
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+[SKIPPED] mysql-community-server-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+MySQL 5.7 Community Server                                                                                                                                                                                                                                                                  27 MB/s |  27 kB     00:00    
+GPG key at file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql (0x5072E1F5) is already installed
+The GPG keys listed for the "MySQL 5.7 Community Server" repository are already installed but they are not correct for this package.
+Check that the correct key URLs are configured for this repository.. Failing package is: mysql-community-client-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Public key for mysql-community-server-5.7.44-1.el7.x86_64.rpm is not installed. Failing package is: mysql-community-server-5.7.44-1.el7.x86_64
+ GPG Keys are configured as: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: GPG check FAILED
+[cloudshell-user@ip-10-134-90-175 ~]$ yum clean packages
+0 files removed
+[cloudshell-user@ip-10-134-90-175 ~]$ sudo yum install --nogpgcheck mysql-community-client-5.7.44-1.el7.x86_64
+Last metadata expiration check: 0:04:29 ago on Thu 28 Mar 2024 12:56:49 PM UTC.
+Dependencies resolved.
+===========================================================================================================================================================================================================================================================================================================================
+ Package                                                                          Architecture                                                     Version                                                                               Repository                                                                   Size
+===========================================================================================================================================================================================================================================================================================================================
+Installing:
+ mysql-community-client                                                           x86_64                                                           5.7.44-1.el7                                                                          mysql57-community                                                            31 M
+Installing dependencies:
+ ncurses-compat-libs                                                              x86_64                                                           6.2-4.20200222.amzn2023.0.6                                                           amazonlinux                                                                 323 k
+
+Transaction Summary
+===========================================================================================================================================================================================================================================================================================================================
+Install  2 Packages
+
+Total size: 31 M
+Installed size: 121 M
+Is this ok [y/N]: y
+Downloading Packages:
+[SKIPPED] ncurses-compat-libs-6.2-4.20200222.amzn2023.0.6.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                  
+[SKIPPED] mysql-community-client-5.7.44-1.el7.x86_64.rpm: Already downloaded                                                                                                                                                                                                                                              
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+The downloaded packages were saved in cache until the next successful transaction.
+You can remove cached packages by executing 'yum clean packages'.
+Error: Transaction test error:
+  file /usr/bin/mysql from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqladmin from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlbinlog from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlcheck from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqldump from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlimport from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlshow from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/bin/mysqlslap from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysql.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqladmin.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlbinlog.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlcheck.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqldump.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlimport.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlshow.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+  file /usr/share/man/man1/mysqlslap.1.gz from install of mysql-community-client-5.7.44-1.el7.x86_64 conflicts with file from package mariadb105-3:10.5.23-1.amzn2023.0.1.x86_64
+
+[cloudshell-user@ip-10-134-90-175 ~]$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Verifying        : mysql-community-server-5.7.44-1.el7.x86_64                                                                                                                                                              6
 Installed:
   libxcrypt-compat-4.4.33-7.amzn2023.x86_64            mysql-community-client-5.7.44-1.el7.x86_64                       mysql-community-common-5.7.44-1.el7.x86_64           mysql-community-libs-5.7.44-1.el7.x86_64          
@@ -89,3 +671,10 @@ Bye
 
 https://serverfault.com/questions/894457/amazon-linux-2-ami-aws-how-to-install-mysql-in-amazon-linux-2
 yum install --nogpgcheck your_package
+
+
+sudo wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+sudo yum localinstall mysql57-community-release-el7-11.noarch.rpm 
+sudo yum install --nogpgcheck mysql-community-client-5.7.44-1.el7.x86_64
+sudo yum install mysql-community-server
+systemctl start mysqld.service
